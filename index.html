@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>BackgroundAnimation</title>
+</head>
+<body>
+    <div class="container"></div>
+
+
+
+
+    <script src="anime.min.js"></script>
+    <script>
+        const stage = document.querySelector('.container');
+        const fragment = document.createDocumentFragment();
+        const grid = [30, 30];
+        const col = grid[0];
+        const row = grid[1];
+        const field = col * row;
+
+        for( let i=0; i<field; i++) {
+            const div = document.createElement('div');
+            fragment.appendChild(div);
+            div.className = 'tail';
+        }
+
+        stage.appendChild(fragment);
+
+        const stageAnimation = anime.timeline({
+            targets: '.tail',
+            easing: 'easeInBack',
+            delay: anime.stagger(10, {from: 'center'}),
+            duration: 2000,
+            endDelay: 500,
+            loop: true,
+            direction: 'alternate'
+        });
+
+        stageAnimation.add({
+            translateX: () =>  anime.random(-900, 900),
+            translateY: () =>  anime.random(-900, 900),
+            delay: anime.stagger(200, {grid: grid, from:'center'}),
+            scale: 0.5,
+            backgroundColor: 'cyan',
+            borderRadius: '50%',
+            autoplay: false,
+        });
+        stageAnimation.add({
+            targets: stage,
+            duration: 1000,
+            easing: 'easeOutBounce'
+        });
+        stageAnimation.add({
+            translateX: 0,
+            translateY: 0,
+            backgroundColor: 'cyan',
+            delay: anime.stagger(300, { grid: grid, from:'center'})
+        });
+        stageAnimation.play();
+    </script>
+    
+</body>
+</html>
